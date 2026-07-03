@@ -4,7 +4,6 @@
 node_modules
 README.md
 x45.png
-assets/master car.jpg
-assets/mastercaarr.jpg
+master*.jpg
 .gitignore
 .assetsignore
