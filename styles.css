@@ -96,18 +96,17 @@ svg{stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-l
   background:radial-gradient(48% 44% at 78% 32%,rgba(214,34,42,.30),transparent 60%);
   animation:heroGlow 9s ease-in-out infinite alternate}
 @keyframes heroGlow{0%{opacity:.55;transform:translate(0,0)}100%{opacity:1;transform:translate(-4%,3%)}}
-/* auto w hero (3D wjazd + krecace sie kola + unoszenie) */
-.hero__car{position:absolute;right:-3%;bottom:8%;width:min(700px,56vw);z-index:0;pointer-events:none;
-  transform-origin:center;animation:carIn 1.2s cubic-bezier(.2,.75,.25,1) both}
-.hero__car .car{width:100%;height:auto;display:block;stroke:none;animation:carFloat 6s ease-in-out 1.3s infinite alternate}
-.hero__car .car ellipse,.hero__car .car rect{stroke:none}
-.hero__car .rim{transform-box:fill-box;transform-origin:center;animation:wheelspin 1.5s cubic-bezier(.15,.6,.2,1) both}
-@keyframes carIn{
-  0%{opacity:0;transform:perspective(1300px) rotateY(-24deg) translateX(90px) scale(.92)}
-  100%{opacity:1;transform:perspective(1300px) rotateY(-7deg) translateX(0) scale(1)}
+/* realistyczne zdjecie auta w hero */
+.hero__car{position:absolute;inset:0;z-index:0;pointer-events:none;
+  animation:photoReveal 1.6s cubic-bezier(.16,1,.3,1) both}
+.hero__photo{width:100%;height:100%;object-fit:cover;object-position:center 40%;
+  animation:photoFloat 8s ease-in-out 1.8s infinite alternate;
+  filter:brightness(0.85) contrast(1.1)}
+@keyframes photoReveal{
+  0%{opacity:0;transform:scale(1.15) translateY(30px)}
+  100%{opacity:1;transform:scale(1) translateY(0)}
 }
-@keyframes carFloat{from{transform:translateY(0)}to{transform:translateY(-12px)}}
-@keyframes wheelspin{from{transform:rotate(0)}to{transform:rotate(860deg)}}
+@keyframes photoFloat{from{transform:scale(1)}to{transform:scale(1.04) translateY(-8px)}}
 /* speed-line: czerwona smuga przelatujaca przez hero */
 .hero__line{position:absolute;left:-30%;bottom:18%;width:26%;height:2px;z-index:1;border-radius:2px;
   background:linear-gradient(90deg,transparent,rgba(214,34,42,.9),transparent);
@@ -280,12 +279,14 @@ main{animation:pageFade .5s var(--ease) both}
   .footer__inner{grid-template-columns:1fr;gap:30px}
   .hero__actions .btn{width:100%}
   .hero__rating{width:100%}
-  .hero{min-height:auto;padding-bottom:clamp(240px,64vw,340px)}
-  .hero__car{width:150%;right:-28%;bottom:0;opacity:.85}
+  .hero{min-height:auto;padding-bottom:0}
+  .hero__car{inset:0;opacity:.7}
+  .hero__photo{object-position:center 35%}
   .hero__inner{position:relative;z-index:2}
 }
 @media (max-width:480px){
-  .hero__car{width:172%;right:-36%;opacity:.8}
+  .hero__car{opacity:.6}
+  .hero__photo{object-position:60% 35%}
 }
 @media (max-width:380px){
   body{font-size:16px}
@@ -415,6 +416,6 @@ main{animation:pageFade .5s var(--ease) both}
   html{scroll-behavior:auto}
   .reveal{opacity:1;transform:none}
   .hero__inner .eyebrow,.hero__title,.hero__lead,.hero__actions,.hero__rating{opacity:1;transform:none}
-  .hero__car,.hero__car .car,.hero__car .rim,.hero__bg::after{animation:none!important;opacity:1}
+  .hero__car,.hero__photo,.hero__bg::after{animation:none!important;opacity:1}
   main{animation:none!important}
 }
