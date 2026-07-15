@@ -96,13 +96,18 @@ svg{stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-l
   background:radial-gradient(48% 44% at 78% 32%,rgba(214,34,42,.30),transparent 60%);
   animation:heroGlow 9s ease-in-out infinite alternate}
 @keyframes heroGlow{0%{opacity:.55;transform:translate(0,0)}100%{opacity:1;transform:translate(-4%,3%)}}
-/* obrotowy licznik-emblemat */
-.hero__gauge{position:absolute;right:-6%;top:50%;transform:translateY(-50%);width:min(560px,58vw);height:auto;z-index:0;
-  color:#fff;opacity:.16;pointer-events:none}
-.hero__gauge .needle{transform-origin:200px 200px;animation:sweep 6s cubic-bezier(.5,0,.3,1) infinite alternate}
-@keyframes sweep{0%{transform:rotate(-38deg)}100%{transform:rotate(150deg)}}
-.hero__gauge .ring-spin{transform-origin:200px 200px;animation:ringspin 40s linear infinite}
-@keyframes ringspin{to{transform:rotate(360deg)}}
+/* auto w hero (3D wjazd + krecace sie kola + unoszenie) */
+.hero__car{position:absolute;right:-3%;bottom:8%;width:min(700px,56vw);z-index:0;pointer-events:none;
+  transform-origin:center;animation:carIn 1.2s cubic-bezier(.2,.75,.25,1) both}
+.hero__car .car{width:100%;height:auto;display:block;stroke:none;animation:carFloat 6s ease-in-out 1.3s infinite alternate}
+.hero__car .car ellipse,.hero__car .car rect{stroke:none}
+.hero__car .rim{transform-box:fill-box;transform-origin:center;animation:wheelspin 1.5s cubic-bezier(.15,.6,.2,1) both}
+@keyframes carIn{
+  0%{opacity:0;transform:perspective(1300px) rotateY(-24deg) translateX(90px) scale(.92)}
+  100%{opacity:1;transform:perspective(1300px) rotateY(-7deg) translateX(0) scale(1)}
+}
+@keyframes carFloat{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+@keyframes wheelspin{from{transform:rotate(0)}to{transform:rotate(860deg)}}
 /* speed-line: czerwona smuga przelatujaca przez hero */
 .hero__line{position:absolute;left:-30%;bottom:18%;width:26%;height:2px;z-index:1;border-radius:2px;
   background:linear-gradient(90deg,transparent,rgba(214,34,42,.9),transparent);
@@ -237,9 +242,19 @@ a.info:hover{background:rgba(255,255,255,.09);border-color:rgba(214,34,42,.5);tr
 .footer__bar{border-top:1px solid rgba(255,255,255,.08)}
 .footer__bar .container{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding-top:20px;padding-bottom:20px;font-size:13px}
 
-/* ---------- Reveal animation ---------- */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-.reveal.is-visible{opacity:1;transform:none}
+/* ---------- Reveal animation (3D) ---------- */
+.reveal{opacity:0;transform:perspective(1000px) translateY(34px) rotateX(9deg);transform-origin:center bottom;
+  transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.is-visible{opacity:1;transform:perspective(1000px) translateY(0) rotateX(0)}
+
+/* ---------- Plynne przejscie miedzy stronami ---------- */
+@keyframes pageFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+main{animation:pageFade .5s var(--ease) both}
+
+/* ---------- 3D tilt kart na hover ---------- */
+.cards,.reviews,.steps{perspective:1100px}
+.card{transform-style:preserve-3d}
+.card:hover{transform:translateY(-6px) rotateX(4deg) rotateY(-3deg)}
 
 /* ---------- Responsive ---------- */
 @media (max-width:1024px){
@@ -265,6 +280,12 @@ a.info:hover{background:rgba(255,255,255,.09);border-color:rgba(214,34,42,.5);tr
   .footer__inner{grid-template-columns:1fr;gap:30px}
   .hero__actions .btn{width:100%}
   .hero__rating{width:100%}
+  .hero{min-height:auto;padding-bottom:clamp(240px,64vw,340px)}
+  .hero__car{width:150%;right:-28%;bottom:0;opacity:.85}
+  .hero__inner{position:relative;z-index:2}
+}
+@media (max-width:480px){
+  .hero__car{width:172%;right:-36%;opacity:.8}
 }
 @media (max-width:380px){
   body{font-size:16px}
@@ -394,5 +415,6 @@ a.info:hover{background:rgba(255,255,255,.09);border-color:rgba(214,34,42,.5);tr
   html{scroll-behavior:auto}
   .reveal{opacity:1;transform:none}
   .hero__inner .eyebrow,.hero__title,.hero__lead,.hero__actions,.hero__rating{opacity:1;transform:none}
-  .hero__gauge .needle,.hero__gauge .ring-spin,.hero__bg::after{animation:none}
+  .hero__car,.hero__car .car,.hero__car .rim,.hero__bg::after{animation:none!important;opacity:1}
+  main{animation:none!important}
 }
